@@ -6,31 +6,30 @@ import twitter4j.TwitterFactory;
 import twitter4j.conf.ConfigurationBuilder;
 
 public class Sender {
+	
     private static Sender instance = null;
     private final int MAX_NUMBER_OF_ATTEMPTS = 3;
     private Twitter twitter;
     private int attemps = 0;
-
-    protected Sender() {
+	ConfigurationBuilder cb;
+    
+    protected Sender(String consumerKey, String consumerSecret, String accessToken, String tokenSecret) {
+    	cb = new ConfigurationBuilder();
+        cb.setDebugEnabled(true)
+                .setOAuthConsumerKey(consumerKey)
+                .setOAuthConsumerSecret(consumerSecret)
+                .setOAuthAccessToken(accessToken)
+                .setOAuthAccessTokenSecret(tokenSecret);
     }
 
-    public static Sender getInstance() {
+    public static Sender getInstance(String consumerKey, String consumerSecret, String accessToken, String tokenSecret) {
         if (isInstanceNull()) {
-            instance = new Sender();
+            instance = new Sender(consumerKey, consumerSecret, accessToken, tokenSecret);
         }
         return instance;
     }
 
     public void connect() {
-        ConfigurationBuilder cb = new ConfigurationBuilder();
-        cb.setDebugEnabled(true)
-                .setOAuthConsumerKey("y1zM2z2cnqfo80qLuMcdAGP4b")
-                .setOAuthConsumerSecret(
-                        "7GYuaitHZ5d0MmoSk2nTHf9NICOJv6hGxBRF1Bqb3v8CLpxIS9")
-                .setOAuthAccessToken(
-                        "3179195939-VwKPvlLgnkMFOpYqp8Mph9e9q4geuCZC3t6GcjA")
-                .setOAuthAccessTokenSecret(
-                        "pNDDi7kdb9BB14RrJGRz9ide9v3uVEqECtlEhJ6T5mt4g");
         TwitterFactory tf = new TwitterFactory(cb.build());
         twitter = tf.getInstance();
     }

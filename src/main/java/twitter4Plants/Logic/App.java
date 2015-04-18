@@ -7,6 +7,12 @@ import java.io.IOException;
 
 import org.apache.commons.cli.*;
 
+/*
+ * .setOAuthConsumerKey("y1zM2z2cnqfo80qLuMcdAGP4b")
+ * .setOAuthConsumerSecret("7GYuaitHZ5d0MmoSk2nTHf9NICOJv6hGxBRF1Bqb3v8CLpxIS9")
+ * .setOAuthAccessToken("3179195939-VwKPvlLgnkMFOpYqp8Mph9e9q4geuCZC3t6GcjA")
+ * .setOAuthAccessTokenSecret("pNDDi7kdb9BB14RrJGRz9ide9v3uVEqECtlEhJ6T5mt4g");
+ */
 
 /**
  * Hello world!
@@ -15,7 +21,7 @@ import org.apache.commons.cli.*;
 public class App {
     public static void main(String[] args) {
     	
-    	//Core core;
+    	Core core;
     	
     	FileReader file = null;
     	BufferedReader reader = null;
@@ -24,10 +30,10 @@ public class App {
     	CommandLineParser argParser = new BasicParser();
     	CommandLine cmd = null;
  
-    	String authConsumerKey;
-        String authConsumerSecret;
-        String authAccessToken;
-        String authAccessTokenSecret;
+    	String authConsumerKey = null;
+        String authConsumerSecret = null;
+        String authAccessToken = null;
+        String authAccessTokenSecret = null;
         
     	int plantUpdateMins = 20;
     	String configurationFile = "Test.tcnf";
@@ -84,16 +90,8 @@ public class App {
 			}
 		}
     	
+    	core = new Core(plantUpdateMins, authConsumerKey, authConsumerSecret, authAccessToken, authAccessTokenSecret); 
     	
-    	// TODO: CONFIGURAR CORE
-    	
-    	// Core.setConsumerKey(authConsumerKey);
-    	// Core.setConsumerSecret(authConsumerSecret);
-    	// Core.setAccessToken(authAccessToken);
-    	// Core.setAccessTokenSecret(authAccessTokenSecret);
-    	
-    	// Core.setUpdateTime(plantUpdateMins);
-    	
-    	// Core.run();
+    	core.run();
     }
 }
