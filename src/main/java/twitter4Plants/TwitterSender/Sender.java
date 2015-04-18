@@ -37,13 +37,16 @@ public class Sender {
 
     public void toTweet(String message) {
         try {
-            if (this.canSend()) {
-                twitter.updateStatus(message);
-                this.resetAttemps();
-            }
+            twitter.updateStatus(message);
+            this.resetAttemps();
         } catch (TwitterException e) {
-            this.doAttemp();
-            this.toTweet(message);
+            if (canSend()) {
+                this.doAttemp();
+                System.out.println(e.getErrorMessage());
+                this.toTweet(message);
+            } else {
+                resetAttemps();
+            }
         }
     }
 
