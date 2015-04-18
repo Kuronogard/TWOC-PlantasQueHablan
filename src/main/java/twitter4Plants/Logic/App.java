@@ -1,4 +1,4 @@
-package Proyecto.Proyecto;
+package twitter4Plants.Logic;
 
 import java.util.List;
 
