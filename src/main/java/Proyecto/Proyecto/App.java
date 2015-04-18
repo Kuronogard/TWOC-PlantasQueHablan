@@ -19,10 +19,10 @@ public class App
         try {
             ConfigurationBuilder cb = new ConfigurationBuilder();
             cb.setDebugEnabled(true)
-              .setOAuthConsumerKey("fS2atOXlJJ2xF36HrW2lzbkqP")
-              .setOAuthConsumerSecret("aSKPHxZiz6kxHr4nnEeZqtoxUzlS4LqKM3zv4tLvlRgBlQrDhD")
-              .setOAuthAccessToken("70995577-wKQEyAFhKToWgvX2GcaDWbOnPy4f96S0N8jvScvxS")
-              .setOAuthAccessTokenSecret("OHp3Rl3cyPzZocHJv4ojsIuLuBp1T3Z3R7tqnZ2FLNaps");
+              .setOAuthConsumerKey("y1zM2z2cnqfo80qLuMcdAGP4b")
+              .setOAuthConsumerSecret("7GYuaitHZ5d0MmoSk2nTHf9NICOJv6hGxBRF1Bqb3v8CLpxIS9")
+              .setOAuthAccessToken("3179195939-VwKPvlLgnkMFOpYqp8Mph9e9q4geuCZC3t6GcjA")
+              .setOAuthAccessTokenSecret("pNDDi7kdb9BB14RrJGRz9ide9v3uVEqECtlEhJ6T5mt4g");
             TwitterFactory tf = new TwitterFactory(cb.build());
             Twitter twitter = tf.getInstance();
             // gets Twitter instance with default credentials
