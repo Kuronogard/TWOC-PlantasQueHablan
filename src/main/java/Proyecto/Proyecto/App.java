@@ -27,11 +27,14 @@ public class App
             Twitter twitter = tf.getInstance();
             // gets Twitter instance with default credentials
             User user = twitter.verifyCredentials();
-            List<Status> statuses = twitter.getHomeTimeline();
-            System.out.println("Showing @" + user.getScreenName() + "'s home timeline.");
-            for (Status status : statuses) {
-                System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
-            }
+            String message = "Soy una planta que habla y esto parece que marcha #twoc15";
+            Status status = twitter.updateStatus(message);
+            
+//            List<Status> statuses = twitter.getHomeTimeline();
+//            System.out.println("Showing @" + user.getScreenName() + "'s home timeline.");
+//            for (Status status : statuses) {
+//                System.out.println("@" + status.getUser().getScreenName() + " - " + status.getText());
+//            }
         } catch (TwitterException te) {
             te.printStackTrace();
             System.out.println("Failed to get timeline: " + te.getMessage());
