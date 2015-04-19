@@ -67,7 +67,7 @@ public class Core {
 	                twitterSender.toTweet(messageTemp);
 	                String messageHumidity = "#".concat(plantMeta.getPlantName())
 	                        .concat(" says: ").concat(plantCheck.humidityStatus())
-	                        .concat(" @").concat(plantMeta.getOwnerTwitter());
+	                        .concat(" @").concat(plantMeta.getOwnerTwitter()).concat(" ").concat(time.toString());
 	                twitterSender.toTweet(messageHumidity);
             	}
             	catch(Exception ex){
@@ -102,9 +102,19 @@ public class Core {
         		command = br.readLine();
 	        		
 		        switch(command){
+		        case "changeTime":
+		        	System.out.print("Minutes: ");
+		        	plantUpdateMins = Integer.parseInt(br.readLine());
+		        	timer.stop();
+		        	timer.setDelay(plantUpdateMins);
+	        		System.out.println("changed plant to: " + plantIdToUpdate);
+	        		timer.start();
+	        		break;
 		        case "changePlant":
 		        	System.out.print("plant ID: ");
 	        		plantIdToUpdate = Integer.parseInt(br.readLine());
+	        		System.out.println("changed plant to: " + plantIdToUpdate);
+	        		break;
 	        	case "addPlant":
 	        		System.out.print("plant ID: ");
 	        		plantID = Integer.parseInt(br.readLine());
