@@ -1,10 +1,8 @@
 package twitter4Plants.DAO;
 
-        import twitter4Plants.Plants.PlantStatus;
-        import twitter4Plants.Weather.OwmClient;
-        import twitter4Plants.Weather.WeatherStatusResponse;
-
-        import java.io.IOException;
+import twitter4Plants.Plants.PlantStatus;
+import twitter4Plants.Weather.OwmClient;
+import twitter4Plants.Weather.WeatherStatusResponse;
 
 /**
  * The Class SensorDAOImpl.
@@ -28,6 +26,7 @@ public class WeatherSensorDAO implements SensorDAO {
             plantStatus = new PlantStatus(idPlantStatus,temp,humidity,light);
             return plantStatus;
         } catch (Exception e) {
+        	System.out.println(e.getMessage());
             e.printStackTrace();
         }
 

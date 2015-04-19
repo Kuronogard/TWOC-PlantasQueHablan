@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
@@ -35,7 +34,7 @@ public class Core {
 
         this.twitterSender = Sender.getInstance(consumerKey, consumerSecret, accessToken, tokenSecret);
 
-        this.sensordao = new SensorDAOImpl();
+        this.sensordao = new WeatherSensorDAO();
         this.serverdao = new ServerDAOImpl();
     }
 
@@ -49,17 +48,7 @@ public class Core {
         timer = new Timer(plantUpdateMins, new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-            	Iterator<PlantMeta> itr = plantList.iterator();
-            	
-            	while(itr.hasNext()){
-                	try{
-                		sendUpdate(itr.next());
-                	}
-                	catch(Exception ex){
-                		System.err.println("Maybe that plant doesn' exist");
-                		ex.printStackTrace();
-                	}
-            	}
+            	updatePlants();
             }
         });
 
@@ -67,6 +56,20 @@ public class Core {
         
         command_terminal();
         
+    }
+    
+    private void updatePlants(){
+    	Iterator<PlantMeta> itr = plantList.iterator();
+    	
+    	while(itr.hasNext()){
+        	try{
+        		sendUpdate(itr.next());
+        	}
+        	catch(Exception ex){
+        		System.err.println("Maybe that plant doesn' exist");
+        		ex.printStackTrace();
+        	}
+    	}	
     }
     
     private void updateMetas(){
@@ -134,6 +137,11 @@ public class Core {
 		        case "help":
 		        	System.out.println("Commands: changeTime, changePlant, addMeta, addPlantType");
 		        	break;
+		        case "forceUpdate":
+	        		timer.stop();
+	        		updatePlants();
+	        		timer.start();
+	        		break;
 		        case "updateMetas":
 		        	timer.stop();
 		        	updateMetas();
