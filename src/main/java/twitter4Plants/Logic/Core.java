@@ -102,6 +102,9 @@ public class Core {
         		command = br.readLine();
 	        		
 		        switch(command){
+		        case "changePlant":
+		        	System.out.print("plant ID: ");
+	        		plantIdToUpdate = Integer.parseInt(br.readLine());
 	        	case "addPlant":
 	        		System.out.print("plant ID: ");
 	        		plantID = Integer.parseInt(br.readLine());
