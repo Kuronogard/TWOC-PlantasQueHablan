@@ -42,19 +42,8 @@ public class Core {
     public void run() {    	  	
     	
         twitterSender.connect();
-        plantList = serverdao.getAllMetas();
-    	Iterator<PlantMeta> itr = plantList.iterator();
-    	System.out.print("Loaded Plants: ");
-    	while(itr.hasNext()){
-        	try{
-        		System.out.print(itr.next().getPlantId() + " ");
-        	}
-        	catch(Exception ex){
-        		System.err.println("Maybe that plant doesn' exist");
-        		ex.printStackTrace();
-        	}
-    	}
-    	System.out.println();
+        
+        updateMetas();
         
         
         timer = new Timer(plantUpdateMins, new ActionListener(){
@@ -78,6 +67,22 @@ public class Core {
         
         command_terminal();
         
+    }
+    
+    private void updateMetas(){
+        plantList = serverdao.getAllMetas();
+    	Iterator<PlantMeta> itr = plantList.iterator();
+    	System.out.print("Loaded Plants: ");
+    	while(itr.hasNext()){
+        	try{
+        		System.out.print(itr.next().getPlantId() + " ");
+        	}
+        	catch(Exception ex){
+        		System.err.println("Maybe that plant doesn' exist");
+        		ex.printStackTrace();
+        	}
+    	}
+    	System.out.println();
     }
     
     
@@ -124,8 +129,7 @@ public class Core {
 		        	break;
 		        case "updateMetas":
 		        	timer.stop();
-		        	plantList = serverdao.getAllMetas();
-		        	System.out.println("Updated plant list");
+		        	updateMetas();
 		        	timer.start();
 		        	break;
 		        case "changeTime":
@@ -133,7 +137,7 @@ public class Core {
 		        	plantUpdateMins = Integer.parseInt(br.readLine());
 		        	timer.stop();
 		        	timer.setDelay(plantUpdateMins);
-	        		System.out.println("changed time update to: " + plantUpdateMins);
+	        		System.out.println("changed update time to: " + plantUpdateMins);
 	        		timer.start();
 	        		break;
 	        	case "addPlant":
