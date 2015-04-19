@@ -35,7 +35,7 @@ public class App {
         String authAccessToken = null;
         String authAccessTokenSecret = null;
         
-    	int plantUpdateMins = 20;
+    	int plantUpdateMins = 20 * 60000;
     	String configurationFile = "Test.tcnf";
     	
     	argOptions.addOption("h", false, "Get this help");
