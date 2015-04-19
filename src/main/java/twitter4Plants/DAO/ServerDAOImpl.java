@@ -2,6 +2,10 @@ package twitter4Plants.DAO;
 
 import static com.mongodb.client.model.Filters.eq;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.List;
+
 import org.bson.Document;
 
 import twitter4Plants.Plants.PlantMeta;
@@ -17,6 +21,43 @@ import com.mongodb.client.MongoDatabase;
  */
 public class ServerDAOImpl implements ServerDAO {
 
+	
+	@Override
+	public List<PlantMeta> getAllMetas() {
+		ArrayList<PlantMeta> list = new ArrayList<PlantMeta>();
+		
+		MongoClientURI connectionString = new MongoClientURI(
+				"mongodb://plantasquehablan:pl4nt4s1@ds029640.mongolab.com:29640/plantasquehablan");
+		MongoClient mongoClient = new MongoClient(connectionString);
+
+		MongoDatabase database = mongoClient.getDatabase("plantasquehablan");
+		
+		MongoCollection<Document> collection = database
+				.getCollection("PlantMeta");
+
+		Document plantTypeJson;
+		Iterator<Document> itr = collection.find().iterator();
+		
+		while(itr.hasNext()){
+			
+			plantTypeJson = itr.next();
+			
+			int plantId = plantTypeJson.getInteger("idPlantMeta", 0);
+			int typeId = plantTypeJson.getInteger("typeId", 0);
+			String plantName = plantTypeJson.getString("plantName");
+			String ownerTwitter = plantTypeJson.getString("ownerTwitter");
+			PlantMeta plantMeta = new PlantMeta(plantId, typeId, plantName,
+					ownerTwitter);
+			
+			list.add(plantMeta);
+		}
+		
+		mongoClient.close();
+		
+		return list;
+	}	
+
+	
 	/*
 	 * (non-Javadoc)
 	 * 

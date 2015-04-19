@@ -1,5 +1,8 @@
 package twitter4Plants.DAO;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import twitter4Plants.Plants.PlantMeta;
 import twitter4Plants.Plants.PlantType;
 
@@ -9,6 +12,13 @@ import twitter4Plants.Plants.PlantType;
  */
 public class DummyServerDAO implements ServerDAO {
 
+	
+	@Override
+	public List<PlantMeta> getAllMetas() {
+		return new ArrayList<PlantMeta>();
+	}
+	
+	
 	/*
 	 * (non-Javadoc)
 	 * 

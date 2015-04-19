@@ -18,6 +18,8 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.sql.Timestamp;
+import java.util.Iterator;
+import java.util.List;
 
 public class Core {
 
@@ -26,7 +28,7 @@ public class Core {
     private ServerDAO serverdao;
     private Timer timer;
     private int plantIdToUpdate;
-
+    private List<PlantMeta> plantList;
     private int plantUpdateMins;
 
     Core(int plantUpdateMins, int plantID, String consumerKey, String consumerSecret, String accessToken, String tokenSecret) {
@@ -42,31 +44,34 @@ public class Core {
     public void run() {    	  	
     	
         twitterSender.connect();
+        plantList = serverdao.getAllMetas();
+    	Iterator<PlantMeta> itr = plantList.iterator();
+    	System.out.print("Loaded Plants: ");
+    	while(itr.hasNext()){
+        	try{
+        		System.out.print(itr.next().getPlantId() + " ");
+        	}
+        	catch(Exception ex){
+        		System.err.println("Maybe that plant doesn' exist");
+        		ex.printStackTrace();
+        	}
+    	}
+    	System.out.println();
+        
+        
         timer = new Timer(plantUpdateMins, new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-            	try{
-	                Timestamp time = new Timestamp(System.currentTimeMillis());
-	                PlantStatus plantStatus = sensordao.getPlantStatus(plantIdToUpdate);
-	                PlantMeta plantMeta = serverdao.getPlantMeta(plantIdToUpdate);
-	                PlantType plantType = serverdao.getPlantType(plantMeta.getTypeId());
-	                PlantCheck plantCheck = new PlantCheck(plantStatus, plantType);
-	                String messageTemp = "#".concat(plantMeta.getPlantName())
-	                        .concat(" says: ").concat(plantCheck.temperatureStatus())
-	                        .concat(" @").concat(plantMeta.getOwnerTwitter())
-	                        .concat(" ").concat(time.toString())
-	                        .concat(" #twoc15");
-	                twitterSender.toTweet(messageTemp);
-	                String messageHumidity = "#".concat(plantMeta.getPlantName())
-	                        .concat(" says: ").concat(plantCheck.humidityStatus())
-	                        .concat(" @").concat(plantMeta.getOwnerTwitter())
-	                        .concat(" ").concat(time.toString())
-	                        .concat(" #twoc15");
-	                twitterSender.toTweet(messageHumidity);
-            	}
-            	catch(Exception ex){
-            		System.err.println("Maybe that plant doesn' exist");
-            		ex.printStackTrace();
+            	Iterator<PlantMeta> itr = plantList.iterator();
+            	
+            	while(itr.hasNext()){
+                	try{
+                		sendUpdate(itr.next());
+                	}
+                	catch(Exception ex){
+                		System.err.println("Maybe that plant doesn' exist");
+                		ex.printStackTrace();
+                	}
             	}
             }
         });
@@ -76,8 +81,28 @@ public class Core {
         command_terminal();
         
     }
-
-
+    
+    
+    private void sendUpdate(PlantMeta plantMeta){
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        PlantStatus plantStatus = sensordao.getPlantStatus(plantIdToUpdate);
+        PlantType plantType = serverdao.getPlantType(plantMeta.getTypeId());
+        PlantCheck plantCheck = new PlantCheck(plantStatus, plantType);
+        
+        String messageTemp = "#".concat(plantMeta.getPlantName())
+                .concat(" says: ").concat(plantCheck.temperatureStatus())
+                .concat(" @").concat(plantMeta.getOwnerTwitter())
+                .concat(" ").concat(time.toString())
+                .concat(" #twoc15");
+        twitterSender.toTweet(messageTemp);
+        String messageHumidity = "#".concat(plantMeta.getPlantName())
+                .concat(" says: ").concat(plantCheck.humidityStatus())
+                .concat(" @").concat(plantMeta.getOwnerTwitter())
+                .concat(" ").concat(time.toString())
+                .concat(" #twoc15");
+        twitterSender.toTweet(messageHumidity);
+    }
+    
     private void command_terminal(){
         InputStreamReader isr = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader (isr);
@@ -98,6 +123,12 @@ public class Core {
 		        switch(command){
 		        case "help":
 		        	System.out.println("Commands: changeTime, changePlant, addMeta, addPlantType");
+		        	break;
+		        case "updateMetas":
+		        	timer.stop();
+		        	plantList = serverdao.getAllMetas();
+		        	System.out.println("Updated plant list");
+		        	timer.start();
 		        	break;
 		        case "changeTime":
 		        	System.out.print("Minutes: ");
