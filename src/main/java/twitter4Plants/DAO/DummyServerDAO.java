@@ -43,7 +43,7 @@ public class DummyServerDAO implements ServerDAO {
 		int plantId = 0;
 		int typeId = 0;
 		String plantName = "planticadev";
-		String ownerTwitter = "iren_evas";
+		String ownerTwitter = "alvarocaste";
 		PlantMeta plantMeta = new PlantMeta(plantId, typeId, plantName,
 				ownerTwitter);
 		return plantMeta;

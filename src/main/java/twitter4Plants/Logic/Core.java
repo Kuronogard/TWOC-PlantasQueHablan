@@ -1,9 +1,6 @@
 package twitter4Plants.Logic;
 
-import twitter4Plants.DAO.DummySensorDAO;
-import twitter4Plants.DAO.DummyServerDAO;
-import twitter4Plants.DAO.SensorDAO;
-import twitter4Plants.DAO.ServerDAO;
+import twitter4Plants.DAO.*;
 import twitter4Plants.Plants.PlantCheck;
 import twitter4Plants.Plants.PlantMeta;
 import twitter4Plants.Plants.PlantStatus;
@@ -14,6 +11,8 @@ import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.sql.Timestamp;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class Core {
 
@@ -28,7 +27,7 @@ public class Core {
         this.plantUpdateMins = plantUpdateMins;
 
         this.twitterSender = Sender.getInstance(consumerKey, consumerSecret, accessToken, tokenSecret);
-        this.sensordao = new DummySensorDAO();
+        this.sensordao = new SensorDAOImpl();
         this.serverdao = new DummyServerDAO();
     }
 
@@ -48,17 +47,23 @@ public class Core {
             @Override
             public void actionPerformed(ActionEvent e) {
                 Timestamp time = new Timestamp(System.currentTimeMillis());
+                String today = new SimpleDateFormat("yyyy-MM-dd HH:mm").format(time);
                 PlantStatus plantStatus = sensordao.getPlantStatus(0);
                 PlantMeta plantMeta = serverdao.getPlantMeta(0);
                 PlantType plantType = serverdao.getPlantType(plantMeta.getTypeId());
                 PlantCheck plantCheck = new PlantCheck(plantStatus, plantType);
                 String messageTemp = "#".concat(plantMeta.getPlantName())
                         .concat(" says: ").concat(plantCheck.temperatureStatus())
-                        .concat(" @").concat(plantMeta.getOwnerTwitter()).concat(" ").concat(time.toString());
-                twitterSender.toTweet(messageTemp);
+                        .concat(" @").concat(plantMeta.getOwnerTwitter()).concat(" ").concat(today);
+                //twitterSender.toTweet(messageTemp);
                 String messageHumidity = "#".concat(plantMeta.getPlantName())
                         .concat(" says: ").concat(plantCheck.humidityStatus())
-                        .concat(" @").concat(plantMeta.getOwnerTwitter());
+                        .concat(" @").concat(plantMeta.getOwnerTwitter()).concat(" ").concat(today);
+                //twitterSender.toTweet(messageHumidity);
+                String messageLight = "#".concat(plantMeta.getPlantName())
+                        .concat(" says: ").concat(plantCheck.lightStatus())
+                        .concat(" @").concat(plantMeta.getOwnerTwitter()).concat(" ").concat(today);
+                //twitterSender.toTweet(messageLight);
             }
         });
 
