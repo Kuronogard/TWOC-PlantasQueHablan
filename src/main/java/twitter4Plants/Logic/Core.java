@@ -39,17 +39,7 @@ public class Core {
         this.serverdao = new ServerDAOImpl();
     }
 
-    public void run() {
-
-
-        //TODO: mantener la lista de plantas a actualizar
-        // - La lee de serverdao
-
-        // La operacion del timer será:
-        // - leer la información de sensordao y serverdao
-        // - comprobar los parámetros
-        // - postear en twitter los resultados
-    	  	
+    public void run() {    	  	
     	
         twitterSender.connect();
         timer = new Timer(plantUpdateMins, new ActionListener(){
@@ -63,11 +53,15 @@ public class Core {
 	                PlantCheck plantCheck = new PlantCheck(plantStatus, plantType);
 	                String messageTemp = "#".concat(plantMeta.getPlantName())
 	                        .concat(" says: ").concat(plantCheck.temperatureStatus())
-	                        .concat(" @").concat(plantMeta.getOwnerTwitter()).concat(" ").concat(time.toString());
+	                        .concat(" @").concat(plantMeta.getOwnerTwitter())
+	                        .concat(" ").concat(time.toString())
+	                        .concat(" #twoc15");
 	                twitterSender.toTweet(messageTemp);
 	                String messageHumidity = "#".concat(plantMeta.getPlantName())
 	                        .concat(" says: ").concat(plantCheck.humidityStatus())
-	                        .concat(" @").concat(plantMeta.getOwnerTwitter()).concat(" ").concat(time.toString());
+	                        .concat(" @").concat(plantMeta.getOwnerTwitter())
+	                        .concat(" ").concat(time.toString())
+	                        .concat(" #twoc15");
 	                twitterSender.toTweet(messageHumidity);
             	}
             	catch(Exception ex){
@@ -102,6 +96,9 @@ public class Core {
         		command = br.readLine();
 	        		
 		        switch(command){
+		        case "help":
+		        	System.out.println("Commands: changeTime, changePlant, addMeta, addPlantType");
+		        	break;
 		        case "changeTime":
 		        	System.out.print("Minutes: ");
 		        	plantUpdateMins = Integer.parseInt(br.readLine());
