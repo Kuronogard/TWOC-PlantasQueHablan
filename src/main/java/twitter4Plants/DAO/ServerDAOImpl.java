@@ -47,9 +47,9 @@ public class ServerDAOImpl implements ServerDAO {
 		double lightMin = plantTypeJson.getDouble("lightMin");
 		double lightHappy = plantTypeJson.getDouble("lightHappy");
 
-		PlantType plantType = new PlantType(temperatureMax, temperatureMin,
-				temperatureHappy, humidityMax, humidityMin, humidityHappy,
-				lightMax, lightMin, lightHappy);
+		PlantType plantType = new PlantType(idPlantType, temperatureMax,
+				temperatureMin, temperatureHappy, humidityMax, humidityMin,
+				humidityHappy, lightMax, lightMin, lightHappy);
 
 		mongoClient.close();
 
