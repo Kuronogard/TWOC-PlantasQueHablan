@@ -55,18 +55,25 @@ public class Core {
         timer = new Timer(plantUpdateMins, new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
-                Timestamp time = new Timestamp(System.currentTimeMillis());
-                PlantStatus plantStatus = sensordao.getPlantStatus(plantIdToUpdate);
-                PlantMeta plantMeta = serverdao.getPlantMeta(plantIdToUpdate);
-                PlantType plantType = serverdao.getPlantType(plantMeta.getTypeId());
-                PlantCheck plantCheck = new PlantCheck(plantStatus, plantType);
-                String messageTemp = "#".concat(plantMeta.getPlantName())
-                        .concat(" says: ").concat(plantCheck.temperatureStatus())
-                        .concat(" @").concat(plantMeta.getOwnerTwitter()).concat(" ").concat(time.toString());
-                twitterSender.toTweet(messageTemp);
-                String messageHumidity = "#".concat(plantMeta.getPlantName())
-                        .concat(" says: ").concat(plantCheck.humidityStatus())
-                        .concat(" @").concat(plantMeta.getOwnerTwitter());
+            	try{
+	                Timestamp time = new Timestamp(System.currentTimeMillis());
+	                PlantStatus plantStatus = sensordao.getPlantStatus(plantIdToUpdate);
+	                PlantMeta plantMeta = serverdao.getPlantMeta(plantIdToUpdate);
+	                PlantType plantType = serverdao.getPlantType(plantMeta.getTypeId());
+	                PlantCheck plantCheck = new PlantCheck(plantStatus, plantType);
+	                String messageTemp = "#".concat(plantMeta.getPlantName())
+	                        .concat(" says: ").concat(plantCheck.temperatureStatus())
+	                        .concat(" @").concat(plantMeta.getOwnerTwitter()).concat(" ").concat(time.toString());
+	                twitterSender.toTweet(messageTemp);
+	                String messageHumidity = "#".concat(plantMeta.getPlantName())
+	                        .concat(" says: ").concat(plantCheck.humidityStatus())
+	                        .concat(" @").concat(plantMeta.getOwnerTwitter());
+	                twitterSender.toTweet(messageHumidity);
+            	}
+            	catch(Exception ex){
+            		System.err.println("Maybe that plant doesn' exist");
+            		ex.printStackTrace();
+            	}
             }
         });
 
