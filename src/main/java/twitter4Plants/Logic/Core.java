@@ -1,7 +1,6 @@
 package twitter4Plants.Logic;
 
 import twitter4Plants.DAO.DummySensorDAO;
-import twitter4Plants.DAO.DummyServerDAO;
 import twitter4Plants.DAO.SensorDAO;
 import twitter4Plants.DAO.ServerDAO;
 import twitter4Plants.DAO.ServerDAOImpl;
@@ -25,13 +24,16 @@ public class Core {
     private Sender twitterSender;
     private SensorDAO sensordao;
     private ServerDAO serverdao;
+    private Timer timer;
+    private int plantIdToUpdate;
 
     private int plantUpdateMins;
 
-    Core(int plantUpdateMins, String consumerKey, String consumerSecret, String accessToken, String tokenSecret) {
+    Core(int plantUpdateMins, int plantID, String consumerKey, String consumerSecret, String accessToken, String tokenSecret) {
 
         this.plantUpdateMins = plantUpdateMins;
 
+        this.plantIdToUpdate = plantID;
         this.twitterSender = Sender.getInstance(consumerKey, consumerSecret, accessToken, tokenSecret);
         this.sensordao = new DummySensorDAO();
         this.serverdao = new ServerDAOImpl();
@@ -39,7 +41,6 @@ public class Core {
 
     public void run() {
 
-        //TODO: configurar y lanzar el timer
 
         //TODO: mantener la lista de plantas a actualizar
         // - La lee de serverdao
@@ -48,13 +49,15 @@ public class Core {
         // - leer la información de sensordao y serverdao
         // - comprobar los parámetros
         // - postear en twitter los resultados
+    	  	
+    	
         twitterSender.connect();
-        Timer timer = new Timer(plantUpdateMins, new ActionListener(){
+        timer = new Timer(plantUpdateMins, new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
                 Timestamp time = new Timestamp(System.currentTimeMillis());
-                PlantStatus plantStatus = sensordao.getPlantStatus(0);
-                PlantMeta plantMeta = serverdao.getPlantMeta(0);
+                PlantStatus plantStatus = sensordao.getPlantStatus(plantIdToUpdate);
+                PlantMeta plantMeta = serverdao.getPlantMeta(plantIdToUpdate);
                 PlantType plantType = serverdao.getPlantType(plantMeta.getTypeId());
                 PlantCheck plantCheck = new PlantCheck(plantStatus, plantType);
                 String messageTemp = "#".concat(plantMeta.getPlantName())
@@ -73,10 +76,11 @@ public class Core {
         
     }
 
+
     private void command_terminal(){
         InputStreamReader isr = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader (isr);
-        String command = new String();
+        String command = null;
         PlantMeta meta;
         PlantType type;
         String plantName, ownerTwitter;
@@ -88,8 +92,8 @@ public class Core {
     	
         while(true){
 	        try {
-				command = br.readLine();
-				
+        		command = br.readLine();
+	        		
 		        switch(command){
 	        	case "addPlant":
 	        		System.out.print("plant ID: ");
@@ -101,13 +105,15 @@ public class Core {
 	        		System.out.print("owner twitter: ");
 	        		ownerTwitter = br.readLine();
 	        		meta = new PlantMeta(plantID, typeID, plantName, ownerTwitter);
+	        		timer.stop();
 	        		serverdao.savePlantMeta(meta);
 	        		meta = serverdao.getPlantMeta(plantID);
-	        		System.out.println("Saved:" + meta.getPlantId() + " " + meta.getOwnerTwitter());
+	        		System.out.println("Saved plant:" + meta.getPlantId() + " " + meta.getOwnerTwitter());
+	        		timer.start();
 	        		break;
 	        	case "addPlantType":
-	        		System.out.print("plant ID: ");
-	        		plantID = Integer.parseInt(br.readLine());
+	        		System.out.print("Type ID: ");
+	        		typeID = Integer.parseInt(br.readLine());
 	        		System.out.print("Humidity Max: ");
 	        		humidityMax = Double.parseDouble(br.readLine());
 	        		System.out.print("Humidity Min: ");
@@ -126,14 +132,18 @@ public class Core {
 	        		lightMin = Double.parseDouble(br.readLine());
 	        		System.out.print("Light Happy: ");
 	        		lightHappy = Double.parseDouble(br.readLine());  
-	        		type = new PlantType(plantID, temperatureMax, temperatureMin, temperatureHappy,
+	        		type = new PlantType(typeID, temperatureMax, temperatureMin, temperatureHappy,
 	        				humidityMax, humidityMin, humidityHappy,
 	        				lightMax, lightMin, lightHappy);
+	        		timer.stop();
 	        		serverdao.savePlantType(type);
+	        		type = serverdao.getPlantType(typeID);
+	        		System.out.println("Saved type:" + type.getId());
+	        		timer.start();
 	        		break;
 	        	default:
 	        		System.out.println(command.concat(" Not an existent command."));
-	        }
+		        }
 				
 			} catch (IOException e1) {
 				System.out.println("Console is not working.");

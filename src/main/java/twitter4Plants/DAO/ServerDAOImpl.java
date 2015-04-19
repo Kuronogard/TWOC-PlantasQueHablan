@@ -75,7 +75,7 @@ public class ServerDAOImpl implements ServerDAO {
 		Document plantTypeJson = collection
 				.find(eq("idPlantMeta", idPlantMeta)).first();
 
-		int plantId = plantTypeJson.getInteger("plantId", 0);
+		int plantId = plantTypeJson.getInteger("idPlantMeta", 0);
 		int typeId = plantTypeJson.getInteger("typeId", 0);
 		String plantName = plantTypeJson.getString("plantName");
 		String ownerTwitter = plantTypeJson.getString("ownerTwitter");
@@ -147,7 +147,7 @@ public class ServerDAOImpl implements ServerDAO {
 		Document document = new Document();
 		document.append("idPlantMeta", plantMeta.getPlantId());
 
-		document.append("ownerId", plantMeta.getTypeId());
+		document.append("typeId", plantMeta.getTypeId());
 		document.append("plantName", plantMeta.getPlantName());
 		document.append("ownerTwitter", plantMeta.getOwnerTwitter());
 		collection.insertOne(document);
