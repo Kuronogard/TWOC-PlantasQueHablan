@@ -13,6 +13,7 @@ import twitter4Plants.TwitterSender.Sender;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.Timestamp;
 
 public class Core {
 
@@ -42,22 +43,26 @@ public class Core {
         // - leer la información de sensordao y serverdao
         // - comprobar los parámetros
         // - postear en twitter los resultados
-        Timer timer = new Timer(plantUpdateMins, new ActionListener() {
+        twitterSender.connect();
+        Timer timer = new Timer(plantUpdateMins, new ActionListener(){
             @Override
             public void actionPerformed(ActionEvent e) {
+                Timestamp time = new Timestamp(System.currentTimeMillis());
                 PlantStatus plantStatus = sensordao.getPlantStatus(0);
                 PlantMeta plantMeta = serverdao.getPlantMeta(0);
                 PlantType plantType = serverdao.getPlantType(plantMeta.getTypeId());
                 PlantCheck plantCheck = new PlantCheck(plantStatus, plantType);
-                twitterSender.connect();
                 String messageTemp = "#".concat(plantMeta.getPlantName())
                         .concat(" says: ").concat(plantCheck.temperatureStatus())
-                        .concat(" @").concat(plantMeta.getOwnerTwitter());
+                        .concat(" @").concat(plantMeta.getOwnerTwitter()).concat(" ").concat(time.toString());
                 twitterSender.toTweet(messageTemp);
                 String messageHumidity = "#".concat(plantMeta.getPlantName())
                         .concat(" says: ").concat(plantCheck.humidityStatus())
                         .concat(" @").concat(plantMeta.getOwnerTwitter());
             }
         });
+
+        timer.start();
+        while(true) {}
     }
 }

@@ -60,7 +60,7 @@ public class App {
     	
     	if(cmd.hasOption("t")){
     		try{
-    			plantUpdateMins = Integer.parseInt(cmd.getOptionValue("t"));
+    			plantUpdateMins = Integer.parseInt(cmd.getOptionValue("t")) * 10000;
     		}
     		catch(NumberFormatException e){
     			e.printStackTrace();
