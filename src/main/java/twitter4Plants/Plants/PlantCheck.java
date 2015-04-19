@@ -33,7 +33,7 @@ public class PlantCheck {
 		else if( status.getTemperature() == type.getTemperatureHappy())
 			plantstatus = "Niiiiiiiiice";
 		else
-			plantstatus = "I'm ok";
+			plantstatus = "laurelindórenan lindelorendor malinornélion ornemalin";
 		
 		return plantstatus;
 	}
@@ -48,7 +48,7 @@ public class PlantCheck {
 		else if( status.getHumidity() == type.getHumidityHappy())
 			plantstatus = "^^ i couldn't be more happy";
 		else
-			plantstatus = "I'm ok";
+			plantstatus = "Taurelilómëa-tumbalemorna Tumbaletaurëa Lómëanor";
 		
 		return plantstatus;
 	}
@@ -63,7 +63,7 @@ public class PlantCheck {
 		else if( status.getLight() == type.getLightHappy())
 			plantstatus = "yumi, yumi, what a delightfull photosynthesis";
 		else
-			plantstatus = "I'm ok";
+			plantstatus = "a-lalla-lalla-rumba-kamanda-lindor-burúme";
 		
 		return plantstatus;
 	}

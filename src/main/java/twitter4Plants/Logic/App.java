@@ -35,12 +35,13 @@ public class App {
         String authAccessToken = null;
         String authAccessTokenSecret = null;
         
-    	int plantUpdateMins = 20;
+    	int plantUpdateMins = 20 * 60000;
     	String configurationFile = "Test.tcnf";
     	
     	argOptions.addOption("h", false, "Get this help");
     	argOptions.addOption("t", true, "Plant update time");
     	argOptions.addOption("f", true, "Twitter credentials file");
+    	argOptions.addOption("p", true, "ID of the planto to update");
     	
     	try {
 			cmd = argParser.parse(argOptions, args);
@@ -60,7 +61,7 @@ public class App {
     	
     	if(cmd.hasOption("t")){
     		try{
-    			plantUpdateMins = Integer.parseInt(cmd.getOptionValue("t")) * 10000;
+    			plantUpdateMins = Integer.parseInt(cmd.getOptionValue("t")) * 60000;
     		}
     		catch(NumberFormatException e){
     			e.printStackTrace();

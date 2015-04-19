@@ -1,5 +1,7 @@
 package twitter4Plants.DAO;
 
+import java.util.List;
+
 import twitter4Plants.Plants.PlantMeta;
 import twitter4Plants.Plants.PlantType;
 
@@ -9,6 +11,13 @@ import twitter4Plants.Plants.PlantType;
  */
 public interface ServerDAO {
 
+	/**
+	 * Gets all the registered Plants in a List
+	 * 
+	 * @return A list containing all registered plants
+	 */
+	public List<PlantMeta> getAllMetas();
+	
 	/**
 	 * Gets the plant type.
 	 *
