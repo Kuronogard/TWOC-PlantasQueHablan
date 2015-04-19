@@ -4,6 +4,7 @@ import twitter4Plants.DAO.DummySensorDAO;
 import twitter4Plants.DAO.DummyServerDAO;
 import twitter4Plants.DAO.SensorDAO;
 import twitter4Plants.DAO.ServerDAO;
+import twitter4Plants.DAO.ServerDAOImpl;
 import twitter4Plants.Plants.PlantCheck;
 import twitter4Plants.Plants.PlantMeta;
 import twitter4Plants.Plants.PlantStatus;
@@ -33,7 +34,7 @@ public class Core {
 
         this.twitterSender = Sender.getInstance(consumerKey, consumerSecret, accessToken, tokenSecret);
         this.sensordao = new DummySensorDAO();
-        this.serverdao = new DummyServerDAO();
+        this.serverdao = new ServerDAOImpl();
     }
 
     public void run() {
@@ -101,6 +102,8 @@ public class Core {
 	        		ownerTwitter = br.readLine();
 	        		meta = new PlantMeta(plantID, typeID, plantName, ownerTwitter);
 	        		serverdao.savePlantMeta(meta);
+	        		meta = serverdao.getPlantMeta(plantID);
+	        		System.out.println("Saved:" + meta.getPlantId() + " " + meta.getOwnerTwitter());
 	        		break;
 	        	case "addPlantType":
 	        		System.out.print("plant ID: ");
@@ -123,7 +126,7 @@ public class Core {
 	        		lightMin = Double.parseDouble(br.readLine());
 	        		System.out.print("Light Happy: ");
 	        		lightHappy = Double.parseDouble(br.readLine());  
-	        		type = new PlantType(temperatureMax, temperatureMin, temperatureHappy,
+	        		type = new PlantType(plantID, temperatureMax, temperatureMin, temperatureHappy,
 	        				humidityMax, humidityMin, humidityHappy,
 	        				lightMax, lightMin, lightHappy);
 	        		serverdao.savePlantType(type);
@@ -133,11 +136,14 @@ public class Core {
 	        }
 				
 			} catch (IOException e1) {
-				System.err.println("Console is not working.");
+				System.out.println("Console is not working.");
 				e1.printStackTrace();
 			} catch(NumberFormatException e){
-				System.err.println("A param is not correct.");
+				System.out.println("A param is not correct.");
 				e.printStackTrace();
+			} catch(Exception e){
+				System.out.println("Unknown exception.");
+				e.printStackTrace();			
 			}
     
         }
