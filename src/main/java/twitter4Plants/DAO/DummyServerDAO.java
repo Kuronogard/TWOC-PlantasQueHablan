@@ -17,12 +17,12 @@ public class DummyServerDAO implements ServerDAO {
 	@Override
 	public PlantType getPlantType(int idPlantType) {
 
-		double temperatureMax = 0;
-		double temperatureMin = 0;
-		double temperatureHappy = 0;
-		double humidityMax = 0;
-		double humidityMin = 0;
-		double humidityHappy = 0;
+		double temperatureMax = 25;
+		double temperatureMin = 15;
+		double temperatureHappy = 20;
+		double humidityMax = 80;
+		double humidityMin = 50;
+		double humidityHappy = 68;
 		double lightMax = 0;
 		double lightMin = 0;
 		double lightHappy = 0;
@@ -41,12 +41,11 @@ public class DummyServerDAO implements ServerDAO {
 	public PlantMeta getPlantMeta(int idPlantMeta) {
 
 		int plantId = 0;
-		int ownerId = 0;
-		String plantName = "";
-		String plantDescription = "";
-		String ownerTwitter = "";
-		PlantMeta plantMeta = new PlantMeta(plantId, ownerId, plantName,
-				plantDescription, ownerTwitter);
+		int typeId = 0;
+		String plantName = "planticadev";
+		String ownerTwitter = "iren_evas";
+		PlantMeta plantMeta = new PlantMeta(plantId, typeId, plantName,
+				ownerTwitter);
 		return plantMeta;
 	}
 

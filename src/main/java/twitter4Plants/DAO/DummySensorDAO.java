@@ -16,8 +16,8 @@ public class DummySensorDAO implements SensorDAO {
 	public PlantStatus getPlantStatus(int idPlantStatus) {
 
 		int id = 0;
-		double temperature = 0;
-		double humidity = 0;
+		double temperature = 20;
+		double humidity = 68;
 		double light = 0;
 		
 		PlantStatus plantStatus = new PlantStatus(id, temperature, humidity,

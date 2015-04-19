@@ -76,12 +76,11 @@ public class ServerDAOImpl implements ServerDAO {
 				.find(eq("idPlantMeta", idPlantMeta)).first();
 
 		int plantId = plantTypeJson.getInteger("plantId", 0);
-		int ownerId = plantTypeJson.getInteger("ownerId", 0);
+		int typeId = plantTypeJson.getInteger("typeId", 0);
 		String plantName = plantTypeJson.getString("plantName");
-		String plantDescription = plantTypeJson.getString("plantDescription");
 		String ownerTwitter = plantTypeJson.getString("ownerTwitter");
-		PlantMeta plantMeta = new PlantMeta(plantId, ownerId, plantName,
-				plantDescription, ownerTwitter);
+		PlantMeta plantMeta = new PlantMeta(plantId, typeId, plantName,
+				ownerTwitter);
 
 		mongoClient.close();
 
@@ -148,9 +147,8 @@ public class ServerDAOImpl implements ServerDAO {
 		Document document = new Document();
 		document.append("idPlantMeta", plantMeta.getPlantId());
 
-		document.append("ownerId", plantMeta.getOwnerId());
+		document.append("ownerId", plantMeta.getTypeId());
 		document.append("plantName", plantMeta.getPlantName());
-		document.append("plantDescription", plantMeta.getPlantDescription());
 		document.append("ownerTwitter", plantMeta.getOwnerTwitter());
 		collection.insertOne(document);
 

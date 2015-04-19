@@ -3,17 +3,15 @@ package twitter4Plants.Plants;
 public class PlantMeta {
 
 	private int plantId;
-	private int ownerId;
+	private int typeId;
 	private String plantName;
-	private String plantDescription;
 	private String ownerTwitter;
 
 	
-	public PlantMeta(int plantId, int ownerId, String plantName, String plantDescription, String ownerTwitter){
+	public PlantMeta(int plantId, int typeId, String plantName, String ownerTwitter){
 		this.plantId = plantId;
-		this.ownerId = ownerId;
+		this.typeId = typeId;
 		this.plantName = plantName;
-		this.plantDescription = plantDescription;
 		this.ownerTwitter = ownerTwitter;
 	}
 
@@ -21,16 +19,12 @@ public class PlantMeta {
 		return plantId;
 	}
 
-	public int getOwnerId() {
-		return ownerId;
+	public int getTypeId() {
+		return typeId;
 	}
 
 	public String getPlantName() {
 		return plantName;
-	}
-
-	public String getPlantDescription() {
-		return plantDescription;
 	}
 
 	public String getOwnerTwitter() {
