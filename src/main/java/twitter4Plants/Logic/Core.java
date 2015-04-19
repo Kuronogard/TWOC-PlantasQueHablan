@@ -153,10 +153,15 @@ public class Core {
 		        	break;
 		        case "changeTime":
 		        	System.out.print("Minutes: ");
-		        	plantUpdateMins = Integer.parseInt(br.readLine());
+		        	plantUpdateMins = Integer.parseInt(br.readLine()) * 60000;
 		        	timer.stop();
-		        	timer.setDelay(plantUpdateMins);
-	        		System.out.println("changed update time to: " + plantUpdateMins);
+		            timer = new Timer(plantUpdateMins, new ActionListener(){
+		                @Override
+		                public void actionPerformed(ActionEvent e) {
+		                	updatePlants();
+		                }
+		            });
+	        		System.out.println("changed update time to: " + plantUpdateMins/60000);
 	        		timer.start();
 	        		break;
 	        	case "addPlant":

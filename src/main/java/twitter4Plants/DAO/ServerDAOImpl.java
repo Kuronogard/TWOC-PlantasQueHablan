@@ -21,16 +21,17 @@ import com.mongodb.client.MongoDatabase;
  */
 public class ServerDAOImpl implements ServerDAO {
 
+	String clientUri = "mongodb://plantasquehablan:pl4nt4s1@ds037581.mongolab.com:37581/plantasquehablan2";
+	String dbName = "plantasquehablan2";
 	
 	@Override
 	public List<PlantMeta> getAllMetas() {
 		ArrayList<PlantMeta> list = new ArrayList<PlantMeta>();
 		
-		MongoClientURI connectionString = new MongoClientURI(
-				"mongodb://plantasquehablan:pl4nt4s1@ds029640.mongolab.com:29640/plantasquehablan");
+		MongoClientURI connectionString = new MongoClientURI(clientUri);
 		MongoClient mongoClient = new MongoClient(connectionString);
 
-		MongoDatabase database = mongoClient.getDatabase("plantasquehablan");
+		MongoDatabase database = mongoClient.getDatabase(dbName);
 		
 		MongoCollection<Document> collection = database
 				.getCollection("PlantMeta");
@@ -66,11 +67,10 @@ public class ServerDAOImpl implements ServerDAO {
 	@Override
 	public PlantType getPlantType(int idPlantType) {
 
-		MongoClientURI connectionString = new MongoClientURI(
-				"mongodb://plantasquehablan:pl4nt4s1@ds029640.mongolab.com:29640/plantasquehablan");
+		MongoClientURI connectionString = new MongoClientURI(clientUri);
 		MongoClient mongoClient = new MongoClient(connectionString);
 
-		MongoDatabase database = mongoClient.getDatabase("plantasquehablan");
+		MongoDatabase database = mongoClient.getDatabase(dbName);
 
 		MongoCollection<Document> collection = database
 				.getCollection("PlantType");
@@ -104,11 +104,10 @@ public class ServerDAOImpl implements ServerDAO {
 	 */
 	@Override
 	public PlantMeta getPlantMeta(int idPlantMeta) {
-		MongoClientURI connectionString = new MongoClientURI(
-				"mongodb://plantasquehablan:pl4nt4s1@ds029640.mongolab.com:29640/plantasquehablan");
+		MongoClientURI connectionString = new MongoClientURI(clientUri);
 		MongoClient mongoClient = new MongoClient(connectionString);
 
-		MongoDatabase database = mongoClient.getDatabase("plantasquehablan");
+		MongoDatabase database = mongoClient.getDatabase(dbName);
 
 		MongoCollection<Document> collection = database
 				.getCollection("PlantMeta");
@@ -137,11 +136,10 @@ public class ServerDAOImpl implements ServerDAO {
 	 */
 	@Override
 	public void savePlantType(PlantType plantType) {
-		MongoClientURI connectionString = new MongoClientURI(
-				"mongodb://plantasquehablan:pl4nt4s1@ds029640.mongolab.com:29640/plantasquehablan");
+		MongoClientURI connectionString = new MongoClientURI(clientUri);
 		MongoClient mongoClient = new MongoClient(connectionString);
 
-		MongoDatabase database = mongoClient.getDatabase("plantasquehablan");
+		MongoDatabase database = mongoClient.getDatabase(dbName);
 
 		MongoCollection<Document> collection = database
 				.getCollection("PlantType");
@@ -176,11 +174,10 @@ public class ServerDAOImpl implements ServerDAO {
 	@Override
 	public void savePlantMeta(PlantMeta plantMeta) {
 
-		MongoClientURI connectionString = new MongoClientURI(
-				"mongodb://plantasquehablan:pl4nt4s1@ds029640.mongolab.com:29640/plantasquehablan");
+		MongoClientURI connectionString = new MongoClientURI(clientUri);
 		MongoClient mongoClient = new MongoClient(connectionString);
 
-		MongoDatabase database = mongoClient.getDatabase("plantasquehablan");
+		MongoDatabase database = mongoClient.getDatabase(dbName);
 
 		MongoCollection<Document> collection = database
 				.getCollection("PlantMeta");
