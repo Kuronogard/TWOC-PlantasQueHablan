@@ -27,15 +27,13 @@ public class Core {
     private SensorDAO sensordao;
     private ServerDAO serverdao;
     private Timer timer;
-    private int plantIdToUpdate;
     private List<PlantMeta> plantList;
     private int plantUpdateMins;
 
-    Core(int plantUpdateMins, int plantID, String consumerKey, String consumerSecret, String accessToken, String tokenSecret) {
+    Core(int plantUpdateMins, String consumerKey, String consumerSecret, String accessToken, String tokenSecret) {
 
         this.plantUpdateMins = plantUpdateMins;
 
-        this.plantIdToUpdate = plantID;
         this.twitterSender = Sender.getInstance(consumerKey, consumerSecret, accessToken, tokenSecret);
         this.sensordao = new DummySensorDAO();
         this.serverdao = new ServerDAOImpl();
@@ -85,7 +83,7 @@ public class Core {
     
     private void sendUpdate(PlantMeta plantMeta){
         Timestamp time = new Timestamp(System.currentTimeMillis());
-        PlantStatus plantStatus = sensordao.getPlantStatus(plantIdToUpdate);
+        PlantStatus plantStatus = sensordao.getPlantStatus(plantMeta.getPlantId());
         PlantType plantType = serverdao.getPlantType(plantMeta.getTypeId());
         PlantCheck plantCheck = new PlantCheck(plantStatus, plantType);
         
@@ -135,13 +133,8 @@ public class Core {
 		        	plantUpdateMins = Integer.parseInt(br.readLine());
 		        	timer.stop();
 		        	timer.setDelay(plantUpdateMins);
-	        		System.out.println("changed plant to: " + plantIdToUpdate);
+	        		System.out.println("changed time update to: " + plantUpdateMins);
 	        		timer.start();
-	        		break;
-		        case "changePlant":
-		        	System.out.print("plant ID: ");
-	        		plantIdToUpdate = Integer.parseInt(br.readLine());
-	        		System.out.println("changed plant to: " + plantIdToUpdate);
 	        		break;
 	        	case "addPlant":
 	        		System.out.print("plant ID: ");

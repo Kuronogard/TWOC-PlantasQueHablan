@@ -36,7 +36,6 @@ public class App {
         String authAccessTokenSecret = null;
         
     	int plantUpdateMins = 20 * 60000;
-    	int plantID = 1;
     	String configurationFile = "Test.tcnf";
     	
     	argOptions.addOption("h", false, "Get this help");
@@ -69,16 +68,6 @@ public class App {
     			System.exit(-1);
     		}
     	}
-    	
-    	if(cmd.hasOption("p")){
-    		try{
-    			plantID = Integer.parseInt(cmd.getOptionValue("p"));
-    		}
-    		catch(NumberFormatException e){
-    			e.printStackTrace();
-    			System.exit(-1);
-    		}
-    	}
    		
     	try {
 			file = new FileReader(configurationFile);
@@ -102,7 +91,7 @@ public class App {
 			}
 		}
     	
-    	core = new Core(plantUpdateMins, plantID, authConsumerKey, authConsumerSecret, authAccessToken, authAccessTokenSecret); 
+    	core = new Core(plantUpdateMins, authConsumerKey, authConsumerSecret, authAccessToken, authAccessTokenSecret); 
     	
     	core.run();
     }
