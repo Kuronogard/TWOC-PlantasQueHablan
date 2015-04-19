@@ -182,7 +182,7 @@ public class OwmClient {
 	 * @throws JSONException if the response from the OWM server can't be parsed
 	 * @throws IOException if there's some network error or the OWM server replies with a error. */
 	public WeatherStatusResponse currentWeatherAtCity (String cityName, String countryCode) throws IOException, JSONException {
-		String subUrl = String.format (Locale.ROOT, "find/name?q=%s,%s", cityName, countryCode.toUpperCase ());
+		String subUrl = String.format (Locale.ROOT, "weather?q=%s,%s", cityName, countryCode.toUpperCase ());
 		JSONObject response = doQuery (subUrl);
 		return new WeatherStatusResponse (response);
 	}

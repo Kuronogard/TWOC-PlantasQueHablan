@@ -34,7 +34,7 @@ public class Core {
 
         this.twitterSender = Sender.getInstance(consumerKey, consumerSecret, accessToken, tokenSecret);
 
-        this.sensordao = new WeatherSensorDAO();
+        this.sensordao = new DummySensorDAO();
         this.serverdao = new ServerDAOImpl();
     }
 
@@ -117,6 +117,7 @@ public class Core {
     }
     
     private void command_terminal(){
+    	boolean salir = false;
         InputStreamReader isr = new InputStreamReader(System.in);
         BufferedReader br = new BufferedReader (isr);
         String command = null;
@@ -129,13 +130,16 @@ public class Core {
         double lightMax, lightMin, lightHappy;
         
     	
-        while(true){
+        while(!salir){
 	        try {
         		command = br.readLine();
 	        		
 		        switch(command){
 		        case "help":
-		        	System.out.println("Commands: changeTime, changePlant, addMeta, addPlantType");
+		        	System.out.println("Commands: quit, forceUpdate, updateMetas, changeTime, addPlant, addPlantType");
+		        	break;
+		        case "quit":
+		        	salir = true;
 		        	break;
 		        case "forceUpdate":
 	        		timer.stop();

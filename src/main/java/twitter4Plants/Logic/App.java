@@ -94,5 +94,7 @@ public class App {
     	core = new Core(plantUpdateMins, authConsumerKey, authConsumerSecret, authAccessToken, authAccessTokenSecret); 
     	
     	core.run();
+    	
+    	System.out.println("Bye plaaaaaants!");
     }
 }

@@ -26,30 +26,37 @@ import org.json.JSONObject;
  * 
  * @author mtavares */
 public class WeatherStatusResponse extends AbstractOwmResponse {
-	private final List<StatusWeatherData> status;
+	private final List<String> status;
 
 	/**
 	 * @param json */
 	public WeatherStatusResponse (JSONObject json) {
 		super (json);
-		JSONArray jsonWeatherStatus = json.optJSONArray (AbstractOwmResponse.JSON_LIST);
+		JSONObject jsonWeatherStatus = json.optJSONObject("main");
 		if (jsonWeatherStatus == null) {
 			this.status = Collections.emptyList ();
 		} else {
-			this.status = new ArrayList<StatusWeatherData> (jsonWeatherStatus.length ());
+			this.status = new ArrayList<String> (jsonWeatherStatus.length ());
+			this.status.add(jsonWeatherStatus.optString("temp"));
+			this.status.add(jsonWeatherStatus.optString("humidity"));
+			this.status.add(jsonWeatherStatus.optJSONObject("clouds").optString("all"));
+			
+			/*
 			for (int i = 0; i <jsonWeatherStatus.length (); i++) {
+				jsonWeatherStatus.optJSON
 				JSONObject jsonStatus = jsonWeatherStatus.optJSONObject (i);
 				if (jsonStatus != null) {
 					this.status.add (new StatusWeatherData (jsonStatus));
 				}
 			}
+			*/
 		}
 	}
 
 	public boolean hasWeatherStatus () {
 		return this.status != null && !this.status.isEmpty ();
 	}
-	public List<StatusWeatherData> getWeatherStatus () {
+	public List<String> getWeatherStatus () {
 		return this.status;
 	}
 }

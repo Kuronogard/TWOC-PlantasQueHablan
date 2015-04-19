@@ -17,13 +17,14 @@ public class WeatherSensorDAO implements SensorDAO {
     @Override
     public PlantStatus getPlantStatus(int idPlantStatus) {
         OwmClient owmClient = new OwmClient();
+        owmClient.setAPPID("845919ef3453dfad28614165da748b6f");
         try {
             PlantStatus plantStatus = null;
             WeatherStatusResponse weatherStatusResponse = owmClient.currentWeatherAtCity("Madrid","es");
-            Float temp = weatherStatusResponse.getWeatherStatus().get(0).getTemp();
-            Float humidity = weatherStatusResponse.getWeatherStatus().get(0).getHumidity();
-            int light = weatherStatusResponse.getWeatherStatus().get(0).getClouds().getAll();
-            plantStatus = new PlantStatus(idPlantStatus,temp,humidity,light);
+            double temp = Double.parseDouble(weatherStatusResponse.getWeatherStatus().get(0));
+            //double humidity = weatherStatusResponse.getWeatherStatus().get(0).getHumidity();
+            //double light = weatherStatusResponse.getWeatherStatus().get(0).getClouds().getAll();
+            //plantStatus = new PlantStatus(idPlantStatus,temp,humidity,light);
             return plantStatus;
         } catch (Exception e) {
         	System.out.println(e.getMessage());
